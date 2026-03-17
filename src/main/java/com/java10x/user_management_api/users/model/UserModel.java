@@ -1,18 +1,28 @@
-package com.java10x.user_management_api.model;
+package com.java10x.user_management_api.users.model;
 
 
+import com.java10x.user_management_api.tasks.model.entity.TaskModel;
 import jakarta.persistence.*;
 
+
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String email;
+
     private String password;
+
+    // @ManyToOne: A user has a single task
+    @ManyToOne
+    @JoinColumn(name = "id_tasks")
+    private TaskModel tasks;
 
     public UserModel() {
     }

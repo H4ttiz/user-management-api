@@ -1,4 +1,4 @@
-package com.java10x.user_management_api.users.model;
+package com.java10x.user_management_api.users.model.entity;
 
 
 import com.java10x.user_management_api.tasks.model.entity.TaskModel;

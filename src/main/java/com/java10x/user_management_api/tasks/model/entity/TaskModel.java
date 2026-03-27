@@ -1,7 +1,7 @@
 package com.java10x.user_management_api.tasks.model.entity;
 
 import com.java10x.user_management_api.tasks.model.enums.Difficulty;
-import com.java10x.user_management_api.users.model.UserModel;
+import com.java10x.user_management_api.users.model.entity.UserModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,5 +1,6 @@
 package com.java10x.user_management_api.tasks.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.java10x.user_management_api.tasks.model.enums.Difficulty;
 import com.java10x.user_management_api.users.model.entity.UserModel;
 import jakarta.persistence.*;
@@ -27,5 +28,6 @@ public class TaskModel {
 
     // @OneToMany: A task can have several users
     @OneToMany(mappedBy = "tasks")
+    @JsonIgnore
     private List<UserModel> users;
 }

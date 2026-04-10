@@ -16,19 +16,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // Add new user
     public UserModel createUser(UserModel user) {
         return userRepository.save(user);
     }
 
-    // Show all user
     public List<UserModel> readAllUsers(){
         return userRepository.findAll();
     }
 
-    //Show all task by id
     public UserModel readAllUserById(Long id){
         Optional<UserModel> user = userRepository.findById(id);
         return user.orElse(null);
+    }
+
+    public void deleteUserById(Long id){
+        userRepository.findById(id);
     }
 }

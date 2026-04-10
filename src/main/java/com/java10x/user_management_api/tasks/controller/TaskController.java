@@ -41,8 +41,8 @@ public class TaskController {
     }
 
     //Delete task by id (DELETE)
-    @DeleteMapping("/delete/id")
-    public String deleteTask(){
-        return "Task deleted";
+    @DeleteMapping("/delete/{id}")
+    public void deleteTask(@PathVariable Long id){
+        taskService.deleteTaskById(id);
     }
 }

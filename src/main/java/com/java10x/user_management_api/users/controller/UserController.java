@@ -35,9 +35,9 @@ public class UserController {
     }
 
     //Alter user by id (UPDATE)
-    @PutMapping("/alterar/id")
-    public String updateUser(){
-        return "User updated";
+    @PutMapping("/alterar/{id}")
+    public UserModel updateUser(@PathVariable Long id, @RequestBody UserModel user){
+        return userService.updateUser(id, user);
     }
 
     //Delete user by id (DELETE)

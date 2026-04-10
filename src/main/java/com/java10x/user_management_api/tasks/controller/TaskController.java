@@ -35,9 +35,9 @@ public class TaskController {
     }
 
     //Alter task by id (UPDATE)
-    @PutMapping("/alterar/id")
-    public String updateTask(){
-        return "Task updated";
+    @PutMapping("/alterar/{id}")
+    public TaskModel updateTask(@PathVariable Long id, @RequestBody TaskModel task){
+        return taskService.updateTask(id, task);
     }
 
     //Delete task by id (DELETE)

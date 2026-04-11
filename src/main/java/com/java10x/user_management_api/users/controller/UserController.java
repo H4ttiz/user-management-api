@@ -1,5 +1,6 @@
 package com.java10x.user_management_api.users.controller;
 
+import com.java10x.user_management_api.users.dto.UserDTO;
 import com.java10x.user_management_api.users.model.entity.UserModel;
 import com.java10x.user_management_api.users.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,13 @@ public class UserController {
 
     // Add new user (CREATE)
     @PostMapping("/add")
-    public UserModel createUser(@RequestBody UserModel user){
+    public UserDTO createUser(@RequestBody UserDTO user){
         return userService.createUser(user);
     }
 
     //Show all user(READ)
     @GetMapping("/all")
-    public List<UserModel> readAllUsers(){
+    public List<UserDTO> readAllUsers(){
         return userService.readAllUsers();
     }
 

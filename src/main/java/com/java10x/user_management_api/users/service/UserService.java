@@ -1,9 +1,12 @@
 package com.java10x.user_management_api.users.service;
 
+import com.java10x.user_management_api.users.dto.UserDTO;
+import com.java10x.user_management_api.users.mapper.UserMapper;
 import com.java10x.user_management_api.users.model.entity.UserModel;
 import com.java10x.user_management_api.users.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,17 +14,28 @@ import java.util.Optional;
 public class UserService {
 
     private UserRepository userRepository;
+    private UserMapper userMapper;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
-    public UserModel createUser(UserModel user) {
-        return userRepository.save(user);
+    public UserDTO createUser(UserDTO userDTO) {
+        UserModel user = userMapper.map(userDTO);
+        user = userRepository.save(user);
+        return userMapper.map(user);
     }
 
-    public List<UserModel> readAllUsers(){
-        return userRepository.findAll();
+    public List<UserDTO> readAllUsers() {
+        List<UserModel> users = userRepository.findAll();
+        List<UserDTO> userDTOs = new ArrayList<>();
+
+        for (UserModel user : users) {
+            userDTOs.add(userMapper.map(user));
+        }
+
+        return userDTOs;
     }
 
     public UserModel readAllUserById(Long id){

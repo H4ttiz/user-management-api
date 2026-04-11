@@ -2,6 +2,7 @@ package com.java10x.user_management_api.users.model.entity;
 
 
 import com.java10x.user_management_api.tasks.model.entity.TaskModel;
+import com.java10x.user_management_api.users.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,8 @@ public class UserModel {
 
     private String password;
 
-    // @ManyToOne: A user has a single task
+    private Role role;
+
     @ManyToOne
     @JoinColumn(name = "id_tasks")
     private TaskModel tasks;

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -29,28 +30,27 @@ public class UserService {
 
     public List<UserDTO> readAllUsers() {
         List<UserModel> users = userRepository.findAll();
-        List<UserDTO> userDTOs = new ArrayList<>();
-
-        for (UserModel user : users) {
-            userDTOs.add(userMapper.map(user));
-        }
-
-        return userDTOs;
+        return users.stream()
+                .map(userMapper::map)
+                .collect(Collectors.toList());
     }
 
-    public UserModel readAllUserById(Long id){
+    public UserDTO readAllUserById(Long id){
         Optional<UserModel> user = userRepository.findById(id);
-        return user.orElse(null);
+        return user.map(userMapper::map).orElse(null);
     }
 
     public void deleteUserById(Long id){
         userRepository.findById(id);
     }
 
-    public UserModel updateUser(Long id,UserModel user) {
-        if(userRepository.existsById(id)){
-            user.setId(id);
-            return userRepository.save(user);
+    public UserDTO updateUser(Long id,UserDTO user) {
+        Optional<UserModel> userExistente = userRepository.findById(id);
+        if(userExistente.isPresent()){
+            UserModel userAtualizado = userMapper.map(user);
+            userAtualizado.setId(id);
+            UserModel ninjaSalvo = userRepository.save(userAtualizado);
+            return userMapper.map(ninjaSalvo);
         }
         return null;
     }

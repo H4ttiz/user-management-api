@@ -31,13 +31,13 @@ public class UserController {
 
     //Show all user by id(READ)
     @GetMapping("/all/{id}")
-    public UserModel readAllUserById(@PathVariable Long id){
+    public UserDTO readAllUserById(@PathVariable Long id){
         return userService.readAllUserById(id);
     }
 
     //Alter user by id (UPDATE)
     @PutMapping("/alterar/{id}")
-    public UserModel updateUser(@PathVariable Long id, @RequestBody UserModel user){
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO user){
         return userService.updateUser(id, user);
     }
 

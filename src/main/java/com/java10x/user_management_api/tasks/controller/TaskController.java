@@ -3,6 +3,9 @@ package com.java10x.user_management_api.tasks.controller;
 import com.java10x.user_management_api.tasks.dto.TaskDTO;
 import com.java10x.user_management_api.tasks.model.entity.TaskModel;
 import com.java10x.user_management_api.tasks.service.TaskService;
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,31 +22,48 @@ public class TaskController {
 
     // Add new task (CREATE)
     @PostMapping("/add")
-    public TaskDTO createTask(@RequestBody TaskDTO task){
-        return taskService.createTask(task);
+    public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO task){
+        TaskDTO novaTask = taskService.createTask(task);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novaTask);
     }
 
     //Show all task(READ)
-    @GetMapping("/all")
-    public List<TaskDTO> readAllTasks(){
-        return taskService.readAllTasks();
+    @GetMapping
+    public ResponseEntity<List<TaskDTO>> readAllTasks(){
+        return ResponseEntity.ok(taskService.readAllTasks());
     }
 
     //Show all task by id(READ)
-    @GetMapping("/all/{id}")
-    public TaskDTO readAllTaskById(@PathVariable Long id){
-        return taskService.readTaskById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskDTO> readAllTaskById(@PathVariable Long id){
+        TaskDTO user = taskService.readTaskById(id);
+
+        if(user != null){
+            return ResponseEntity.ok(user);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     //Alter task by id (UPDATE)
-    @PutMapping("/alterar/{id}")
-    public TaskDTO updateTask(@PathVariable Long id, @RequestBody TaskDTO task){
-        return taskService.updateTask(id, task);
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable Long id, @RequestBody TaskDTO task){
+        TaskDTO existingTask = taskService.readTaskById(id);
+
+        if(existingTask != null){
+            return ResponseEntity.ok(taskService.updateTask(id,task));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     //Delete task by id (DELETE)
-    @DeleteMapping("/delete/{id}")
-    public void deleteTask(@PathVariable Long id){
-        taskService.deleteTaskById(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id){
+        TaskDTO existingTask = taskService.readTaskById(id);
+
+        if(existingTask != null){
+            taskService.deleteTaskById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

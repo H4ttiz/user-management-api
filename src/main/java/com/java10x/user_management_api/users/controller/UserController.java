@@ -1,8 +1,9 @@
 package com.java10x.user_management_api.users.controller;
 
 import com.java10x.user_management_api.users.dto.UserDTO;
-import com.java10x.user_management_api.users.model.entity.UserModel;
 import com.java10x.user_management_api.users.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -19,31 +20,48 @@ public class UserController {
 
     // Add new user (CREATE)
     @PostMapping("/add")
-    public UserDTO createUser(@RequestBody UserDTO user){
-        return userService.createUser(user);
+    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO user){
+        UserDTO novoUser = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoUser);
     }
 
-    //Show all user(READ)
-    @GetMapping("/all")
-    public List<UserDTO> readAllUsers(){
-        return userService.readAllUsers();
+    // READ ALL
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> readAllUsers(){
+        return ResponseEntity.ok(userService.readAllUsers());
     }
 
-    //Show all user by id(READ)
-    @GetMapping("/all/{id}")
-    public UserDTO readAllUserById(@PathVariable Long id){
-        return userService.readAllUserById(id);
+    // READ BY ID
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> readUserById(@PathVariable Long id){
+        UserDTO user = userService.readAllUserById(id);
+
+        if (user != null){
+            return ResponseEntity.ok(user);
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    //Alter user by id (UPDATE)
-    @PutMapping("/alterar/{id}")
-    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO user){
-        return userService.updateUser(id, user);
+    // UPDATE
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserDTO user){
+        UserDTO existingUser = userService.readAllUserById(id);
+
+        if (existingUser != null){
+            return ResponseEntity.ok(userService.updateUser(id, user));
+        }
+        return ResponseEntity.notFound().build();
     }
 
-    //Delete user by id (DELETE)
-    @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable Long id){
-        userService.deleteUserById(id);
+    // DELETE
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+        UserDTO user = userService.readAllUserById(id);
+
+        if (user != null){
+            userService.deleteUserById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

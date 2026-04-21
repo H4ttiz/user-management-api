@@ -12,6 +12,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "tasks")
 public class UserModel {
 
     @Id

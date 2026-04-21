@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Usuário</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            padding: 20px;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<form th:action="@{/user/ui/save}" th:object="${user}" method="post">
+
+    <input type="hidden" th:field="*{id}"/>
+
+    <label>Nome</label>
+    <input type="text" th:field="*{name}" required>
+
+    <label>Email</label>
+    <input type="email" th:field="*{email}" required>
+
+    <label>Role</label>
+    <input type="text" th:field="*{role}">
+
+    <button type="submit">Salvar</button>
+
+</form>
+
+</body>
+</html>
